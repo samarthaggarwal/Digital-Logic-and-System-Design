@@ -1,0 +1,67 @@
+LAB 8 - Elevator Controller
+
+Lab Partners	:	Samarth Aggarwal	-	2016CS10395
+			Ayush Patel		-	2016CS10396
+
+OUR VHF FILE UPTO THE POINT THAT WE HAVE MADE IS ALSO PRESENT IN THE SUBMISSION. PLEASE NOT THAT THE VHF FILE IS NOT YET COMPLETE.
+
+Entities Declared :
+
+1) lab8_elevator_control :
+
+	entity lab8_elevator_control is
+		    Port (  up_request : in STD_LOGIC_VECTOR (3 downto 0);
+	            down_request : in STD_LOGIC_VECTOR (3 downto 0);
+	            up_request_indicator : out STD_LOGIC_VECTOR (3 downto 0);
+	            down_request_indicator : out STD_LOGIC_VECTOR (3 downto 0);
+	            reset : in STD_LOGIC;
+	            cathode : out STD_LOGIC_VECTOR (6 downto 0);
+	            anode : out STD_LOGIC_VECTOR (3 downto 0);
+	            door_open : in STD_LOGIC_VECTOR (1 downto 0);
+	            door_closed : in STD_LOGIC_VECTOR (1 downto 0);
+	            clk : in STD_LOGIC;
+	            lift1_floor : in STD_LOGIC_VECTOR (3 downto 0);
+	            lift2_floor : in STD_LOGIC_VECTOR (3 downto 0);
+	            lift1_floor_indicator : out STD_LOGIC_VECTOR (3 downto 0);
+	            lift2_floor_indicator : out STD_LOGIC_VECTOR (3 downto 0);
+	            sim_mode : in STD_LOGIC);
+	end lab8_elevator_control;
+	
+	
+	SIGNALS USED:
+		    signal lift1_s : STD_LOGIC_VECTOR (1 downto 0);
+		    signal lift1_f : STD_LOGIC_VECTOR (1 downto 0);
+		    signal lift1_d : STD_LOGIC;
+		    signal lift1_ideal : STD_LOGIC;
+		    signal lift2_ideal : STD_LOGIC;
+		    signal lift2_s : STD_LOGIC_VECTOR (1 downto 0);
+		    signal lift2_f : STD_LOGIC_VECTOR (1 downto 0);
+		    signal lift2_d : STD_LOGIC;
+		    signal req0 : STD_LOGIC_VECTOR (1 downto 0);
+		    signal req1 : STD_LOGIC_VECTOR (1 downto 0);
+		    signal req2 : STD_LOGIC_VECTOR (1 downto 0);
+		    signal req3 : STD_LOGIC_VECTOR (1 downto 0);
+		    signal lift1_fr : STD_LOGIC_VECTOR (3 downto 0);
+		    signal lift2_fr : STD_LOGIC_VECTOR (3 downto 0);
+		    signal count1 : NATURAL :=0;
+		    signal count2 : NATURAL :=0;
+
+	This entity handles the different cases and how should the system respond to it. It is a finite state machine where every possibility is represented as a state. Further, its port mapping sends the display content for the seven segment display to the entity below. 
+
+2) ssd :
+
+	entity lab4_seven_segment_display is
+	   port ( b          : in    std_logic_vector (15 downto 0):="0000000000000000"; 
+	          clk        : in    std_logic; 
+	          pushbutton : in    std_logic; 
+	          anode      : out   std_logic_vector (3 downto 0); 
+	          cathode    : out   std_logic_vector (6 downto 0));
+	end lab4_seven_segment_display;
+
+	SIGNALS USED:
+	
+		signal an         : std_logic_vector (3 downto 0);
+		signal temp       : std_logic_vector(1 downto 0);
+	   	signal temp_anode : std_logic_vector(3 downto 0);
+	
+	This entity handles the part of the code that is responsible for displaying on the seven segment display provided what is to be displayed is received from the above entity. It receives an 8 bit input from the above entity and gives a 4 bit out for anode and a 7 bit output for cathode. There are 4 pairs of 2 bits each that correspond to content of the individual display digit.
